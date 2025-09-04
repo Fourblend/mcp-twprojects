@@ -29,6 +29,15 @@ import (
 
 var reBearerToken = regexp.MustCompile(`^Bearer (.+)$`)
 
+func getServerAddress() string {
+    // Railway provides PORT environment variable
+    if port := os.Getenv("PORT"); port != "" {
+        return "0.0.0.0:" + port
+    }
+    // Fallback to 8080 for local development
+    return "0.0.0.0:8080"
+}
+
 func main() {
 	defer handleExit()
 
@@ -54,7 +63,7 @@ func main() {
 	mux.Handle("/", mcpHTTPServer)
 
 	httpServer := &http.Server{
-    	Addr:    resources.Info.ServerAddress,
+    Addr:    getServerAddress(),
 		Handler: addRouterMiddlewares(resources, mux),
 	}
 
