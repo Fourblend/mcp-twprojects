@@ -54,7 +54,7 @@ func main() {
 	mux.Handle("/", mcpHTTPServer)
 
 	httpServer := &http.Server{
-		Addr:    ":8080",
+    	Addr:    resources.Info.ServerAddress,
 		Handler: addRouterMiddlewares(resources, mux),
 	}
 
